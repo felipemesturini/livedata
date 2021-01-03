@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
-
+    android:foreground="?attr/selectableItemBackground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -40,7 +40,7 @@
         app:srcCompat="@drawable/ic_timer" />
 
     <TextView
-        android:id="@+id/destTextView2"
+        android:id="@+id/destTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -50,4 +50,15 @@
         app:layout_constraintStart_toStartOf="@+id/flightTextView"
         app:layout_constraintTop_toBottomOf="@+id/flightTextView"
         tools:text="De Porto Alegre para são paulo" />
+
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintBottom_toBottomOf="@+id/timerImageView"
+        app:layout_constraintStart_toEndOf="@+id/timerImageView"
+        app:layout_constraintTop_toTopOf="@+id/timerImageView"
+        tools:text="Partida: 12:00 tempo 2 horas" />
 </androidx.constraintlayout.widget.ConstraintLayout>

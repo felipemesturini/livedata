@@ -8,19 +8,23 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel(app: Application): AndroidViewModel(app) {
+    private var _flights: LiveData<List<Flight>>
+
     private val mItens = mutableListOf<Flight>()
-    val itens: MutableLiveData<List<Flight>> = MutableLiveData()
+    val itens: LiveData<List<Flight>>
+        get() = _flights
+
+    init {
+        val db = DbHelper.getInstance(getApplication(), viewModelScope)
+        _flights = db.flightDao.list()
+    }
 
     fun addItem(flight: Flight) {
         mItens.add(flight)
-        itens.postValue(mItens)
+        //itens.postValue(mItens)
     }
 
     fun fetchData() {
-        viewModelScope.launch {
-            mItens.addAll(FlightDummy.data())
-            itens.postValue(mItens)
 
-        }
     }
 }

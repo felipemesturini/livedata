@@ -12,26 +12,30 @@ import kotlinx.coroutines.withContext
 
 class FlightDetailViewModel(app: Application): AndroidViewModel(app) {
     private val _isLoading = MutableLiveData<Boolean>()
+    private val _flight = MutableLiveData<Flight>()
 
-    var item: MutableLiveData<Flight> = MutableLiveData()
+    val item: LiveData<Flight>
+        get() = _flight
     val isLoading: LiveData<Boolean>
         get() = _isLoading
 
 
     internal fun fetchItem(id: Long) {
-
-
+        _isLoading.postValue(true)
         viewModelScope.launch {
-            withContext(Dispatchers.Main) {
-                _isLoading.postValue(true)
+            withContext(Dispatchers.IO) {
+                val db = DbHelper.getInstance(getApplication(), viewModelScope)
+                val dao = db.flightDao
+                dao.clear()
+                val flights = FlightDummy.data()
+                flights.forEach {
+                    dao.insert(it)
+                }
+                val flight = dao.get(id)
+                delay(10000)
+                _flight.postValue(flight)
             }
-            val flight = FlightDummy.data().first { it.codigo.equals(id) }
-            delay(10000)
-            item.postValue( flight )
-            withContext(Dispatchers.Main) {
-                _isLoading.postValue(false)
-            }
-
+            _isLoading.postValue(false)
         }
 
     }
